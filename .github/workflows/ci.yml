@@ -9,14 +9,14 @@ jobs:
     runs-on: ubuntu-latest
   
     steps:
-      uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-      name: Add deploy_key
-      env:
-        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
-      run:
-        echo "$DEPLOY_KEY" > "$HOME/deploy_key"
-        chmod 600 "$HOME/deploy_key"
-      name: rsync files
-      run:
-        rsync -avhz -e "ssh -o StrictHostKeyChecking=no -i $HOME/deploy_key" --exclude-from '.exclude-list.txt' . christian@192.168.178.30:/home/christian/Projekte/bergtour
+      - name: Add deploy_key
+        env:
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+        run: |
+          echo "$DEPLOY_KEY" > "$HOME/deploy_key"
+          chmod 600 "$HOME/deploy_key"
+      - name: rsync files
+        run: |
+          rsync -avhz -e "ssh -o StrictHostKeyChecking=no -i $HOME/deploy_key" --exclude-from '.exclude-list.txt' . christian@192.168.178.30:/home/christian/Projekte/bergtour
